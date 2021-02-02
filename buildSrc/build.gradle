@@ -1,0 +1,17 @@
+apply plugin: 'groovy'  //必须
+apply plugin: 'java'
+
+dependencies {
+    implementation gradleApi() //必须
+    implementation localGroovy() //必须
+    //如果要使用android的API，需要引用这个，实现Transform的时候会用到
+    implementation 'com.android.tools.build:gradle:4.0.1'
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral() //必须
+}

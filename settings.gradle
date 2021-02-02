@@ -1,2 +1,5 @@
-include ':app'
+include ':imagemonitor'
+include ':asmdemo'
+include ':dellog'
+include ':aidl'
 rootProject.name = "AndroidLearn"

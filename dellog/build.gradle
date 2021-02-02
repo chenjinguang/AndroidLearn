@@ -1,0 +1,43 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+   implementation gradleApi()
+   implementation localGroovy()
+}
+
+repositories {
+    mavenCentral()
+}
+
+//group和version在后面使用自定义插件的时候会用到
+//group='com.hc.plugin'
+//version='1.0.0'
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            //提交到远程服务器：
+//            // repository(url: "http://www.xxx.com/repos") {
+//            //    authentication(userName: "admin", password: "admin")
+//            // }
+//            //本地的Maven地址设置为D:/repos
+//            //设置插件的GAV参数
+//            repository(url: uri('/Users/chenjinguang/Documents/workspace-android/gradleLearn/repo'))
+//        }
+//    }
+//}
+
+//上传到Maven仓库的task
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //设置插件的GAV参数
+            pom.groupId = 'com.cjg'
+            pom.artifactId = 'dellog'
+            pom.version = '1.0.2'
+            //文件发布到下面目录
+            repository(url: uri('../repo'))
+        }
+    }
+}
