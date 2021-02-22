@@ -1,0 +1,123 @@
+package com.cjg.asmdemo.util;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+/**
+ * ================================================
+ * 作    者：ZhouZhengyi
+ * 创建日期：2020/4/7 16:52
+ * 描    述： 用来加载弹窗小图
+ * 修订历史：1.为了防止二次hook,自定义该工具类加载图片
+ * 2.目前已经不再使用，hook图片框架时能得到相应的bitmap对象
+ * 可以直接使用ImageView加载。
+ * ================================================
+ */
+public class ImageUtil {
+    
+    public static final String TAG = "ImageUtil";
+
+    /**
+     * 从输入流中得到Bitmap
+     * 作者: ZhouZhengyi
+     * 创建时间: 2020/4/7 17:05
+     */
+    private static  Bitmap decodeBitmapFromStream(String filePath, int targetWidth, int targetHeight) {
+        Log.d(TAG, "decodeBitmapFromStream Thread id:" + Thread.currentThread().getId());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        //只获取Bitmap原始宽高，不分配内存
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        //计算inSampleSize值
+        options.inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(filePath, options);
+    }
+
+    /**
+     * 只要bitmap的宽或者高 大于ImageView的宽高
+     * 那么就计算inSampleSize的值
+     * 作者: ZhouZhengyi
+     * 创建时间: 2020/4/7 17:14
+     */
+    private static  int calculateInSampleSize(BitmapFactory.Options options, int targetWidth, int targetHeight) {
+        if (targetHeight == 0 || targetWidth == 0) {
+            return 1;
+        }
+        Log.d(TAG, "calculateInSampleSize thread id:" + Thread.currentThread().getId());
+        int height = options.outHeight;
+        int width = options.outWidth;
+        int inSampleSize = 1;
+        if (width > targetWidth || height > targetHeight) {
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) >= targetHeight &&
+                    (halfWidth / inSampleSize) >= targetWidth) {
+                Log.d(TAG, "calculateInSampleSize thread id:" + Thread.currentThread().getId() + " inSampleSize:" + inSampleSize + " H");
+                inSampleSize *= 2;
+            }
+
+        }
+        return inSampleSize;
+    }
+
+//    /**
+//     * 如果使用四大图片框架，则会有循环引用的问题，所以只能利用OkHttp自己实现图片下载
+//     * 作者: ZhouZhengyi
+//     * 创建时间: 2020/4/7 17:17
+//     */
+//    public static  void downloadImage(final String url, final ImageView targetView) {
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+//        final Request request = new Request.Builder().url(url).build();
+//        okHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                targetView.setImageResource(R.drawable.ic_failed);
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String root = LargeImage.APPLICATION.getFilesDir().getAbsolutePath() + "/largeimage";
+//                InputStream is = null;
+//                FileOutputStream fileOutputStream = null;
+//                File dir = new File(root);
+//                if(!dir.exists()){
+//                    dir.mkdirs();
+//                }
+//                String imageUrl = url;
+//                int index = imageUrl.lastIndexOf("/");
+//                String fileName = imageUrl.substring(index,imageUrl.length());
+//                File file = new File(dir,fileName);
+//                try {
+//                    Log.d(TAG, "onResponse thread id:" + Thread.currentThread().getId());
+//                    is = response.body().byteStream();
+//                    fileOutputStream = new FileOutputStream(file);
+//                    byte [] bytes = new byte[2048];
+//                    int len = -1;
+//                    while((len=is.read(bytes)) != -1){
+//                        fileOutputStream.write(bytes,0,len);
+//                    }
+//                    fileOutputStream.flush();
+//                    final Bitmap bitmap = decodeBitmapFromStream(file.getAbsolutePath(), targetView.getWidth(), targetView.getHeight());
+//                    targetView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Log.d(TAG, "onResponse thread id:" + Thread.currentThread().getId());
+//                            targetView.setImageBitmap(bitmap);
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    if (is != null) {
+//                        is.close();
+//                    }
+//                    if(fileOutputStream != null){
+//                        fileOutputStream.close();
+//                    }
+//                }
+//            }
+//        });
+//    }
+}

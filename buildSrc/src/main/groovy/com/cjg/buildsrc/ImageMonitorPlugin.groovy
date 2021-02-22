@@ -10,5 +10,6 @@ class ImageMonitorPlugin implements Plugin<Project> {
     void apply(Project project) {
         def android = project.extensions.getByType(AppExtension)
         android.registerTransform(new ImageMonitorTransform())
+        android.registerTransform(new LifecycleMonitorTransform())
     }
 }

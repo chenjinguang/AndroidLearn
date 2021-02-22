@@ -1,9 +1,5 @@
 package com.cjg.androidlearn;
 
-import android.graphics.Bitmap;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class RequestManager {

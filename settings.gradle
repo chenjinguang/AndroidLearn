@@ -1,4 +1,8 @@
+include ':hermeseventbus'
+include ':mmkvdemo'
+include ':demo'
 include ':imagemonitor'
+include ':imageloader'
 include ':asmdemo'
 include ':dellog'
 include ':aidl'

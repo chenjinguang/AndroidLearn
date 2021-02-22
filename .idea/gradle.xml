@@ -15,7 +15,11 @@
             <option value="$PROJECT_DIR$/asmdemo" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/dellog" />
+            <option value="$PROJECT_DIR$/demo" />
+            <option value="$PROJECT_DIR$/hermeseventbus" />
+            <option value="$PROJECT_DIR$/imageloader" />
             <option value="$PROJECT_DIR$/imagemonitor" />
+            <option value="$PROJECT_DIR$/mmkvdemo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

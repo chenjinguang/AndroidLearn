@@ -2,13 +2,10 @@ package com.cjg.buildsrc
 
 import com.android.annotations.NonNull
 import com.android.build.api.transform.*
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
@@ -20,21 +17,9 @@ import java.util.zip.ZipEntry
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
-class LifecycleMonitorPlugin extends Transform implements Plugin<Project> {
+class LifecycleMonitorTransform extends Transform {
 
     public static final String NAME = "ImageMonitorPlugin"
-
-    @Override
-    void apply(Project project) {
-        def android = project.extensions.getByType(AppExtension)
-        android.registerTransform(this)
-        println("OOOOOOOOOO")
-        project.task("MonitorImage"){
-            doLast {
-                println "MonitorImageLast"
-            }
-        }
-    }
 
     @Override
     String getName() {

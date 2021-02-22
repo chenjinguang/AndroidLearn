@@ -2,6 +2,10 @@ package com.cjg.aidl;
 
 import org.junit.Test;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,5 +17,36 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+
+
+    @Test
+    public void test() throws InterruptedException {
+        //虚引用：功能，不会影响到对象的生命周期的，
+        // 但是能让程序员知道该对象什么时候被 回收了
+//        ReferenceQueue<Object> referenceQueuee=new ReferenceQueue<>();
+//        Object phantomObject=new Object();
+//        PhantomReference phantomReference=new PhantomReference(phantomObject,referenceQueuee);
+//        phantomObject=null;
+//        System.out.println("phantomObject:"+phantomObject);//null
+//        System.out.println("referenceQueuee"+referenceQueuee.poll());//null
+//        System.gc();
+//        Thread.sleep(2000);
+//        System.out.println("referenceQueuee:"+referenceQueuee.poll());
+
+
+        ReferenceQueue<Object> referenceQueuee=new ReferenceQueue<>();
+        Object weakObject=new Object();
+        //弱引用
+        WeakReference<Object>  weakReference=new WeakReference<> (weakObject,referenceQueuee);
+        System.out.println("WeakReference:"+weakReference.get());
+        System.out.println("referenceQueuee:"+referenceQueuee.poll());
+
+        weakObject=null;
+        System.gc();
+        Thread.sleep(2000);
+        System.out.println("WeakReference:"+weakReference.get());
+        System.out.println("referenceQueuee:"+referenceQueuee.poll());
+
     }
 }
